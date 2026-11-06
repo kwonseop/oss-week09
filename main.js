@@ -12,7 +12,7 @@
 
 // 주어짐: 도시 세 곳의 위도·경도. 키는 index.html <select> 의 option value 와 같습니다.
 import { getForecast } from "./api.js";
-import { toDays, isGoodDay, summarize } from "./logic.js";
+import { toDays, isGoodDay, summarize, reasons } from "./logic.js";
 
 const CITIES = {
   seoul: { name: "Seoul", lat: 37.566, lon: 126.9784 },
@@ -77,22 +77,25 @@ windInput.addEventListener("input", updateLimits);
 
 function dayRow(day) {
   const tr = document.createElement("tr");
+
   for (const text of [
     day.date.slice(5),
     `${day.max}°`,
     `${day.wind} km/h`,
     `${day.rain}%`,
+    reasons(day, state.limits).join(", "),
   ]) {
     const td = document.createElement("td");
     td.textContent = text;
     tr.append(td);
   }
+
   if (isGoodDay(day, state.limits)) {
     tr.classList.add("good");
   }
+
   return tr;
 }
-
 function render() {
   summaryEl.textContent = state.city
     ? `${state.city.name}: ${summarize(state.days, state.limits)}.`
