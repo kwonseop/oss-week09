@@ -63,6 +63,18 @@ const state = {
   limits: { rain: Number(rainInput.value), wind: Number(windInput.value) },
 };
 
+function updateLimits() {
+  state.limits = {
+    rain: Number(rainInput.value),
+    wind: Number(windInput.value),
+  };
+
+  render();
+}
+
+rainInput.addEventListener("input", updateLimits);
+windInput.addEventListener("input", updateLimits);
+
 function dayRow(day) {
   const tr = document.createElement("tr");
   for (const text of [
